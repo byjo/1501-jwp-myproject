@@ -7,6 +7,7 @@
 
   <properties>
 	<tomcat.version>8.0.15</tomcat.version>
+	<tomcat.scope>provided</tomcat.scope>
 	<skipTests>true</skipTests>
   </properties>
   
@@ -42,35 +43,46 @@
 		<groupId>org.apache.tomcat.embed</groupId>
 		<artifactId>tomcat-embed-core</artifactId>
 		<version>${tomcat.version}</version>
+		<scope>${tomcat.scope}</scope>
 	</dependency>
 	<dependency>
 		<groupId>org.apache.tomcat.embed</groupId>
 		<artifactId>tomcat-embed-logging-juli</artifactId>
 		<version>${tomcat.version}</version>
+		<scope>${tomcat.scope}</scope>
 	</dependency>
 	<dependency>
 		<groupId>org.apache.tomcat.embed</groupId>
 		<artifactId>tomcat-embed-jasper</artifactId>
 		<version>${tomcat.version}</version>
+		<scope>${tomcat.scope}</scope>
 	</dependency>
 	<dependency>
 		<groupId>org.apache.tomcat</groupId>
 		<artifactId>tomcat-jasper</artifactId>
 		<version>${tomcat.version}</version>
+		<scope>${tomcat.scope}</scope>
+		<exclusions>
+			<exclusion>
+			</exclusion>
+		</exclusions>
 	</dependency>
 	<dependency>
 		<groupId>org.apache.tomcat</groupId>
 		<artifactId>tomcat-jasper-el</artifactId>
 		<version>${tomcat.version}</version>
+		<scope>${tomcat.scope}</scope>
 	</dependency>
 	<dependency>
 		<groupId>org.apache.tomcat</groupId>
 		<artifactId>tomcat-jsp-api</artifactId>
 		<version>${tomcat.version}</version>
+		<scope>${tomcat.scope}</scope>
 	</dependency>
   </dependencies>
   
   <build>
+  	<finalName>myproject</finalName>
   	<sourceDirectory>src</sourceDirectory>
     <testSourceDirectory>test</testSourceDirectory>
     <outputDirectory>webapps/WEB-INF/classes</outputDirectory>
@@ -94,7 +106,11 @@
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-war-plugin</artifactId>
 			<configuration>
-				<webXml>webapps\WEB-INF\web.xml</webXml>
+				<warSourceDirectory>webapps</warSourceDirectory>
+				<packagingExcludes>
+					WEBAPPS/WEB-INF/lib/commons-logging-*.jar,
+					%regex[WEB-INF/lib/log4j-(?!over-slf4j).*.jar]
+				</packagingExcludes>
 			</configuration>
 		</plugin>
 	</plugins>
